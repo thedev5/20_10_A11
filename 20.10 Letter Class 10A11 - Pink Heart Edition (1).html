@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Hồng 20.10 — Lớp 10A11</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        softPink: '#FFF0F5',
+                        rosePink: '#FFB6C1',
+                        hotPink: '#FF1493',
+                        deepRose: '#C71585',
+                        warmRed: '#E63946',
+                        goldAccent: '#FFD700',
+                        glassBg: 'rgba(255, 255, 255, 0.88)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Comfortaa', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.6) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+        @keyframes pulseHeart {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 10px 20px rgba(255,20,147,0.4)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 15px 30px rgba(255,20,147,0.7)); }
+        }
+        .animate-pulse-heart {
+            animation: pulseHeart 3s ease-in-out infinite;
+        }
+        .pink-gradient-bg {
+            background: linear-gradient(135deg, #FFF0F5 0%, #FFD1DC 40%, #FFB6C1 100%);
+        }
+        .glass-card-pink {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 3px solid rgba(255, 182, 193, 0.6);
+            box-shadow: 0 20px 50px rgba(199, 21, 133, 0.15);
+        }
+        .text-glow-pink {
+            text-shadow: 0 4px 20px rgba(255, 20, 147, 0.3);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF69B4;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="pink-gradient-bg text-gray-900 min-h-screen font-sans overflow-x-hidden relative selection:bg-hotPink selection:text-white">
+
+    <!-- Floating Hearts Canvas Background -->
+    <canvas id="heartCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Top Audio & Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-card-pink border-b-2 border-rosePink/50 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl animate-bounce">💖</span>
+            <span class="font-display font-bold text-lg md:text-xl text-deepRose tracking-wide">10A11 • 20 Tháng 10</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="toggleAudioBtn" class="bg-hotPink/10 hover:bg-hotPink/20 text-hotPink font-bold px-4 py-2 rounded-full border border-hotPink/30 transition-all flex items-center space-x-2 text-sm md:text-base">
+                <span id="audioIcon">🎵</span>
+                <span id="audioText">Nhạc nền: Tắt</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN APPLICATION CONTAINER -->
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12">
+
+        <!-- GIAI ĐOẠN 1: Phong Thư Hồng -->
+        <section id="phase1" class="flex flex-col items-center justify-center text-center max-w-2xl mx-auto my-auto transition-all duration-700">
+            <div class="relative mb-8 animate-pulse-heart">
+                <!-- Outer Glow -->
+                <div class="absolute -inset-6 bg-gradient-to-r from-hotPink via-rosePink to-deepRose rounded-full blur-2xl opacity-40"></div>
+                
+                <!-- Envelope Box -->
+                <div id="openCardTrigger" class="relative glass-card-pink rounded-3xl p-8 md:p-12 flex flex-col items-center cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="w-28 h-28 rounded-full bg-gradient-to-br from-hotPink to-rosePink flex items-center justify-center mb-6 shadow-xl text-5xl">
+                        💌
+                    </div>
+                    <span class="px-4 py-1.5 rounded-full bg-hotPink/10 text-hotPink text-sm font-bold tracking-widest uppercase mb-4 border border-hotPink/20">
+                        Lớp 10A11 • 20/10
+                    </span>
+                    <h1 class="font-display text-4xl md:text-6xl font-black text-deepRose mb-4 leading-tight">
+                        LÁ THƯ HỒNG
+                    </h1>
+                    <p class="text-lg md:text-2xl font-semibold text-gray-700 mb-8 max-w-md">
+                        Gửi tặng 26 bông hoa rực rỡ nhất của tập thể 10A11 🌸
+                    </p>
+                    <button id="openLetterBtn" class="px-10 py-5 rounded-2xl bg-gradient-to-r from-hotPink to-deepRose text-white font-extrabold text-xl md:text-2xl shadow-xl hover:shadow-hotPink/50 transition-all transform active:scale-95 flex items-center space-x-3">
+                        <span>BẤM ĐỂ MỞ THƯ</span>
+                        <span class="text-2xl">✨</span>
+                    </button>
+                </div>
+            </div>
+            <p class="text-base md:text-lg font-bold text-deepRose/80 bg-white/70 px-6 py-2 rounded-full border border-rosePink">
+                💡 Dành cho trình chiếu trên Tivi / Máy chiếu cuối lớp học
+            </p>
+        </section>
+
+        <!-- GIAI ĐOẠN 2: Trình Chiếu 26 Bông Hoa (Chữ Siêu To) -->
+        <section id="phase2" class="hidden flex-col items-center justify-center text-center w-full max-w-5xl mx-auto transition-all duration-700">
+            
+            <!-- Progress Controls Bar -->
+            <div class="w-full flex flex-wrap justify-between items-center mb-6 px-6 py-4 glass-card-pink rounded-2xl gap-4">
+                <div class="flex items-center space-x-3">
+                    <span class="text-base font-bold text-gray-600">Bông hoa thứ:</span>
+                    <span id="nameProgress" class="font-display text-hotPink font-black text-2xl md:text-3xl">01 / 26</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="pauseResumeBtn" class="px-5 py-2.5 rounded-xl bg-white text-deepRose font-bold text-sm md:text-base border-2 border-rosePink shadow hover:bg-rosePink/10 transition-all flex items-center space-x-2">
+                        <span id="pauseIcon">⏸️</span>
+                        <span id="pauseBtnText">Tạm dừng</span>
+                    </button>
+                    <button id="skipNamesBtn" class="px-5 py-2.5 rounded-xl bg-hotPink text-white font-bold text-sm md:text-base shadow hover:bg-deepRose transition-all">
+                        Đến thư chung ➔
+                    </button>
+                </div>
+            </div>
+
+            <!-- Student Name Card (Designed for back-of-classroom visibility) -->
+            <div class="relative w-full glass-card-pink rounded-3xl p-8 md:p-16 flex flex-col items-center justify-center min-h-[480px] border-4 border-rosePink shadow-2xl overflow-hidden">
+                
+                <!-- Corner Heart Decor -->
+                <div class="absolute top-4 left-6 text-4xl md:text-5xl opacity-80">🌸</div>
+                <div class="absolute top-4 right-6 text-4xl md:text-5xl opacity-80">💖</div>
+                <div class="absolute bottom-4 left-6 text-4xl md:text-5xl opacity-80">✨</div>
+                <div class="absolute bottom-4 right-6 text-4xl md:text-5xl opacity-80">🌷</div>
+
+                <!-- Number Indicator -->
+                <div class="inline-flex items-center space-x-2 px-6 py-2 rounded-full bg-rosePink/20 text-deepRose font-black text-lg md:text-2xl mb-6 border border-rosePink/40">
+                    <span>✨ Bông hoa số <span id="currentStarNum" class="text-hotPink text-2xl md:text-3xl">1</span> / 26 ✨</span>
+                </div>
+                
+                <!-- Main Name Display (Extra Large) -->
+                <div id="nameContainer" class="transition-all duration-500 transform scale-100 opacity-100 my-4 w-full">
+                    <h2 id="starNameDisplay" class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-hotPink tracking-tight text-center leading-tight mb-8 text-glow-pink">
+                        Nguyễn Ngọc Quỳnh Anh
+                    </h2>
+                    
+                    <!-- Individual Wish (1-2 lines, Extra Bold for Classroom Reading) -->
+                    <div class="bg-white/90 p-6 md:p-8 rounded-2xl border-2 border-rosePink/60 shadow-inner max-w-4xl mx-auto">
+                        <p id="starWishDisplay" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-deepRose text-center leading-relaxed">
+                            Chúc bạn luôn dịu dàng, rạng rỡ và đạt trọn vẹn mọi mục tiêu trong năm học này!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-sm md:text-base font-bold text-gray-500 mt-8 flex items-center space-x-2">
+                    <span class="animate-spin text-hotPink">⌛</span>
+                    <span>Tự động chuyển tên sau 6 giây</span>
+                </div>
+
+                <!-- Progress Timer Bar -->
+                <div class="absolute bottom-0 left-0 right-0 h-3 bg-rosePink/30 overflow-hidden">
+                    <div id="nameTimerBar" class="h-full bg-gradient-to-r from-hotPink to-deepRose w-full transition-all duration-[6000ms] linear"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GIAI ĐOẠN 3: Lá Thư Chung Cho Cả Lớp 10A11 -->
+        <section id="phase3" class="hidden flex-col items-center w-full max-w-4xl mx-auto transition-all duration-700">
+            <div class="w-full glass-card-pink rounded-3xl p-8 md:p-14 border-4 border-rosePink shadow-2xl relative">
+                
+                <div class="text-center mb-8">
+                    <span class="px-6 py-2 rounded-full bg-hotPink text-white font-extrabold text-sm md:text-base tracking-widest uppercase shadow">
+                        Bức Thư Chung Tập Thể 10A11
+                    </span>
+                    <h2 class="font-display text-3xl md:text-5xl font-black text-deepRose mt-4 mb-2">
+                        GỬI 26 BÔNG HOA LỚP 10A11 💖
+                    </h2>
+                    <p class="text-base md:text-xl font-bold text-hotPink">Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10</p>
+                </div>
+
+                <!-- Letter Content - Large clear text -->
+                <div class="space-y-6 text-gray-800 text-lg sm:text-xl md:text-2xl leading-relaxed font-semibold bg-white/80 p-6 md:p-10 rounded-2xl border border-rosePink/50">
+                    <p class="text-hotPink font-bold text-xl md:text-3xl">Gửi đến 26 bạn nữ thương yêu của lớp mình,</p>
+                    
+                    <p>Có những điều nhỏ bé khiến một ngày bình thường trở nên thật ấm áp — một nụ cười rạng rỡ, một câu chuyện vui vẻ, hay sự hiện diện của các bạn làm cho lớp học 10A11 thêm phần rực rỡ và đặc biệt.</p>
+                    
+                    <p>Nhân ngày 20/10, chúc các bạn luôn vui vẻ, tự tin, học tập thật tốt và giữ mãi nét đáng yêu của riêng mình. Mong rằng những ngày cùng nhau đến trường sẽ luôn ngập tràn tiếng cười và kỷ niệm đẹp.</p>
+                    
+                    <p>Dù bài tập có hơi nhiều hay kỳ thi có đôi lúc căng thẳng, mong các bạn vẫn luôn tràn đầy năng lượng tích cực để vượt qua thật dễ dàng nhé!</p>
+                    
+                    <p class="text-deepRose font-extrabold text-xl md:text-3xl text-center pt-4">
+                        🌸 Chúc các bạn nữ 10A11 có một ngày 20/10 thật ngập tràn niềm vui, hoa và những điều dịu dàng nhất! 🌸
+                    </p>
+                    
+                    <div class="pt-6 border-t-2 border-rosePink/40 flex flex-col sm:flex-row justify-between items-center text-base md:text-xl font-bold text-deepRose">
+                        <span>Happy Vietnamese Women's Day!</span>
+                        <span class="mt-2 sm:mt-0 text-hotPink">Thương gửi từ Nam sinh & Tập thể 10A11 💕</span>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <button id="replayNamesBtn" class="px-8 py-4 rounded-2xl bg-white hover:bg-rosePink/20 text-deepRose font-extrabold text-base md:text-lg border-2 border-rosePink shadow transition-all flex items-center space-x-2">
+                        <span>🔄 Xem lại 26 bạn nữ</span>
+                    </button>
+                    <button id="finishOutroBtn" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-hotPink to-deepRose text-white font-extrabold text-base md:text-lg shadow-lg hover:opacity-95 transition-all">
+                        Hoàn tất & Khám phá ✦
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GIAI ĐOẠN 4: Lời Cảm Ơn Cuối -->
+        <section id="phase4" class="hidden flex-col items-center justify-center text-center max-w-2xl mx-auto transition-all duration-700">
+            <div class="glass-card-pink rounded-3xl p-10 border-4 border-rosePink shadow-2xl relative overflow-hidden">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-hotPink to-rosePink mx-auto flex items-center justify-center mb-6 shadow-xl text-5xl">
+                    💖
+                </div>
+                <h3 class="font-display text-3xl md:text-4xl font-black text-deepRose mb-3">Tập Thể Lớp 10A11</h3>
+                <p class="text-lg md:text-2xl font-bold text-gray-700 mb-8">
+                    Chúc các bạn nữ luôn luôn tỏa sáng rực rỡ và hạnh phúc mỗi ngày! ✨
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button id="reReadLetterBtn" class="px-6 py-3.5 rounded-xl bg-white hover:bg-rosePink/20 text-deepRose font-bold text-base border-2 border-rosePink shadow">
+                        Đọc lại thư chung
+                    </button>
+                    <button id="restartExperienceBtn" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-hotPink to-deepRose text-white font-bold text-base shadow hover:opacity-90">
+                        Mở lại từ đầu 🔄
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. Data: 26 Female Students of Class 10A11 with Personalized Wishes
+        const students10A11 = [
+            { name: "Nguyễn Ngọc Quỳnh Anh", wish: "Chúc bạn luôn dịu dàng, rạng rỡ và đạt trọn vẹn mọi mục tiêu trong năm học này!" },
+            { name: "Võ Ngọc Xuân Anh", wish: "Chúc bạn luôn giữ nét tươi vui, đáng yêu và gặp thật nhiều may mắn!" },
+            { name: "Nguyễn Thị Kim Cương", wish: "Chúc bạn tỏa sáng lấp lánh như chính tên gọi của mình và luôn thành công!" },
+            { name: "Nguyễn Hồ Thúy Duy", wish: "Chúc bạn luôn tự tin, học giỏi và lúc nào cũng ngập tràn niềm vui!" },
+            { name: "Trương Thùy Phương Duy", wish: "Chúc bạn ngày 20/10 thật ngập tràn hoa, quà và nụ cười rạng rỡ!" },
+            { name: "Nguyễn Ngọc Kỳ Duyên", wish: "Chúc bạn luôn xinh đẹp, thanh lịch và gặt hái thật nhiều điểm 10!" },
+            { name: "Bùi Thị Ngọc Hạnh", wish: "Chúc bạn luôn tràn đầy năng lượng tích cực và luôn là niềm vui của cả lớp!" },
+            { name: "Ngô Gia Hân", wish: "Chúc bạn ngày càng xinh xắn, đáng yêu và học tập cực kỳ xuất sắc!" },
+            { name: "Nguyễn Thị Ánh Hồng", wish: "Chúc bạn luôn rực rỡ như hoa hồng và gặp nhiều điều dịu dàng nhất!" },
+            { name: "Hồ Huỳnh Diễm My", wish: "Chúc bạn luôn nhẹ nhàng, vui vẻ và luôn tự tin bước trên con đường mình chọn!" },
+            { name: "Từ Phạm Hoàn Mỷ", wish: "Chúc bạn xinh đẹp hoàn hảo, học hay và có một ngày 20/10 vô cùng ý nghĩa!" },
+            { name: "Nguyễn Ánh Ngà", wish: "Chúc bạn luôn thuần khiết, dịu dàng và lúc nào cũng mỉm cười hạnh phúc!" },
+            { name: "Võ Phúc Trúc Nghi", wish: "Chúc bạn luôn thông minh, cá tính và chinh phục trọn vẹn mọi kỳ thi!" },
+            { name: "Lê Nguyễn Tuyết Như", wish: "Chúc bạn luôn xinh xắn như tuyết đầu mùa và học giỏi xuất sắc!" },
+            { name: "Phan Nguyễn Mỹ Quyên", wish: "Chúc bạn luôn duyên dáng, đáng yêu và tràn ngập niềm vui mỗi ngày!" },
+            { name: "Nguyễn Đặng Như Quỳnh", wish: "Chúc bạn rạng rỡ như đóa hoa quỳnh và luôn vươn tới những giấc mơ lớn!" },
+            { name: "Đặng Thị Yến Thanh", wish: "Chúc bạn luôn dịu dàng, năng động và luôn gặp thật nhiều may mắn!" },
+            { name: "Nguyễn Ngọc Minh Thư", wish: "Chúc bạn luôn thông minh, xinh đẹp và học cực kỳ xuất sắc!" },
+            { name: "Lê Ngọc Bảo Thy", wish: "Chúc bạn luôn ngọt ngào, đáng yêu và được vô vàn người trân trọng!" },
+            { name: "Trần Nguyễn Cát Tiên", wish: "Chúc bạn luôn vui tươi, xinh xắn như một cô tiên nhỏ của 10A11!" },
+            { name: "Nguyễn Phương Trúc", wish: "Chúc bạn luôn kiên cường, giỏi giang và thành công trong mọi việc!" },
+            { name: "Đặng Thị Diễm Tuyết", wish: "Chúc bạn ngày 20/10 ngập tràn nụ cười, xinh đẹp và học tập thật tốt!" },
+            { name: "Nguyễn Mai Minh Tuyết", wish: "Chúc bạn luôn trong sáng, rạng rỡ và đạt nhiều thành tích vượt trội!" },
+            { name: "Nguyễn Ngọc Tường Vy", wish: "Chúc bạn xinh đẹp rực rỡ như hoa tường vi và luôn yêu đời!" },
+            { name: "Trần Thị Tường Vy", wish: "Chúc bạn luôn vui vẻ, duyên dáng và tràn đầy sức sống thanh xuân!" },
+            { name: "Trần Bảo Yến", wish: "Chúc bạn luôn may mắn, học giỏi và luôn là cô gái tuyệt vời của 10A11!" }
+        ];
+
+        // 2. Floating Hearts Canvas Background
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let hearts = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class FloatingHeart {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 50;
+                this.size = Math.random() * 20 + 10;
+                this.speedY = Math.random() * 1.5 + 0.8;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.opacity = Math.random() * 0.6 + 0.3;
+                this.color = Math.random() > 0.5 ? '#FF1493' : '#FF69B4';
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -30) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(this.x, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 35; i++) {
+            hearts.push(new FloatingHeart());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            hearts.forEach(h => {
+                h.update();
+                h.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 3. Gentle Soft Piano/Bell Web Audio Synthesizer
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let audioInterval = null;
+
+        function initPianoMusic() {
+            if (audioCtx) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Gentle romantic chord sequence frequencies (C maj7, Am7, F maj7, G)
+                const chords = [
+                    [261.63, 329.63, 392.00, 493.88], // Cmaj7
+                    [220.00, 261.63, 329.63, 392.00], // Am7
+                    [174.61, 220.00, 261.63, 329.63], // Fmaj7
+                    [196.00, 246.94, 293.66, 392.00]  // G
+                ];
+                let chordIndex = 0;
+
+                function playSoftNote(freq) {
+                    if (!audioCtx || audioCtx.state !== 'running') return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.5);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.6);
+                }
+
+                // Play gentle arpeggiated piano notes continuously
+                audioInterval = setInterval(() => {
+                    if (isAudioPlaying) {
+                        const currentChord = chords[chordIndex];
+                        const note = currentChord[Math.floor(Math.random() * currentChord.length)];
+                        playSoftNote(note);
+                        if (Math.random() > 0.6) {
+                            chordIndex = (chordIndex + 1) % chords.length;
+                        }
+                    }
+                }, 800);
+
+                isAudioPlaying = true;
+                updateAudioUI(true);
+            } catch (e) {
+                console.log("Audio API init error:", e);
+            }
+        }
+
+        function toggleAudio() {
+            if (!audioCtx) {
+                initPianoMusic();
+            } else {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                    isAudioPlaying = true;
+                    updateAudioUI(true);
+                } else if (audioCtx.state === 'running') {
+                    audioCtx.suspend();
+                    isAudioPlaying = false;
+                    updateAudioUI(false);
+                }
+            }
+        }
+
+        function updateAudioUI(running) {
+            const textEl = document.getElementById('audioText');
+            if (running) {
+                textEl.textContent = "Nhạc nền: Đang phát 🎶";
+            } else {
+                textEl.textContent = "Nhạc nền: Tạm dừng 🔇";
+            }
+        }
+
+        document.getElementById('toggleAudioBtn').addEventListener('click', toggleAudio);
+
+        // 4. Showcase State Logic (6 Seconds per Student)
+        let currentIndex = 0;
+        let timer = null;
+        let isPaused = false;
+
+        const phase1 = document.getElementById('phase1');
+        const phase2 = document.getElementById('phase2');
+        const phase3 = document.getElementById('phase3');
+        const phase4 = document.getElementById('phase4');
+
+        // Open Letter Trigger
+        document.getElementById('openLetterBtn').addEventListener('click', () => {
+            if (!audioCtx) {
+                initPianoMusic();
+            }
+            phase1.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                phase1.classList.add('hidden');
+                phase2.classList.remove('hidden');
+                phase2.classList.add('flex', 'opacity-100');
+                startNameShowcase();
+            }, 500);
+        });
+
+        function startNameShowcase() {
+            currentIndex = 0;
+            showStudent(currentIndex);
+        }
+
+        function showStudent(index) {
+            if (index >= students10A11.length) {
+                transitionToPhase3();
+                return;
+            }
+
+            const nameDisplay = document.getElementById('starNameDisplay');
+            const wishDisplay = document.getElementById('starWishDisplay');
+            const nameContainer = document.getElementById('nameContainer');
+            const progressEl = document.getElementById('nameProgress');
+            const starNumEl = document.getElementById('currentStarNum');
+            const timerBar = document.getElementById('nameTimerBar');
+
+            nameContainer.style.opacity = '0';
+            nameContainer.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                const item = students10A11[index];
+                nameDisplay.textContent = item.name;
+                wishDisplay.textContent = item.wish;
+                progressEl.textContent = `${String(index + 1).padStart(2, '0')} / 26`;
+                starNumEl.textContent = index + 1;
+
+                nameContainer.style.opacity = '1';
+                nameContainer.style.transform = 'scale(1)';
+            }, 300);
+
+            // Reset 6-second timer bar
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '0%';
+            void timerBar.offsetWidth;
+            timerBar.style.transition = 'width 6000ms linear';
+            timerBar.style.width = '100%';
+
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                if (!isPaused) {
+                    currentIndex++;
+                    showStudent(currentIndex);
+                }
+            }, 6000);
+        }
+
+        // Pause/Resume Logic
+        const pauseResumeBtn = document.getElementById('pauseResumeBtn');
+        const pauseBtnText = document.getElementById('pauseBtnText');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const timerBar = document.getElementById('nameTimerBar');
+
+        pauseResumeBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            if (isPaused) {
+                clearTimeout(timer);
+                const computedWidth = window.getComputedStyle(timerBar).width;
+                timerBar.style.transition = 'none';
+                timerBar.style.width = computedWidth;
+                pauseBtnText.textContent = "Tiếp tục";
+                pauseIcon.textContent = "▶️";
+            } else {
+                timerBar.style.transition = 'width 6000ms linear';
+                timerBar.style.width = '100%';
+                pauseBtnText.textContent = "Tạm dừng";
+                pauseIcon.textContent = "⏸️";
+                currentIndex++;
+                showStudent(currentIndex);
+            }
+        });
+
+        // Skip button
+        document.getElementById('skipNamesBtn').addEventListener('click', () => {
+            if (timer) clearTimeout(timer);
+            transitionToPhase3();
+        });
+
+        function transitionToPhase3() {
+            if (timer) clearTimeout(timer);
+            phase2.classList.add('opacity-0');
+            setTimeout(() => {
+                phase2.classList.add('hidden');
+                phase3.classList.remove('hidden');
+                phase3.classList.add('flex', 'opacity-100');
+            }, 500);
+        }
+
+        // Replay names from collective letter
+        document.getElementById('replayNamesBtn').addEventListener('click', () => {
+            phase3.classList.add('opacity-0');
+            setTimeout(() => {
+                phase3.classList.add('hidden');
+                phase2.classList.remove('hidden');
+                phase2.classList.add('flex', 'opacity-100');
+                startNameShowcase();
+            }, 500);
+        });
+
+        // Transition to Finale
+        document.getElementById('finishOutroBtn').addEventListener('click', () => {
+            phase3.classList.add('opacity-0');
+            setTimeout(() => {
+                phase3.classList.add('hidden');
+                phase4.classList.remove('hidden');
+                phase4.classList.add('flex', 'opacity-100');
+            }, 500);
+        });
+
+        // Re-read collective letter
+        document.getElementById('reReadLetterBtn').addEventListener('click', () => {
+            phase4.classList.add('opacity-0');
+            setTimeout(() => {
+                phase4.classList.add('hidden');
+                phase3.classList.remove('hidden');
+                phase3.classList.add('flex', 'opacity-100');
+            }, 500);
+        });
+
+        // Restart entire experience
+        document.getElementById('restartExperienceBtn').addEventListener('click', () => {
+            phase4.classList.add('opacity-0');
+            setTimeout(() => {
+                phase4.classList.add('hidden');
+                phase1.classList.remove('hidden');
+                phase1.classList.remove('opacity-0', 'scale-95');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
